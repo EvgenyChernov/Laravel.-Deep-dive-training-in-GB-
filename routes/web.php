@@ -20,5 +20,12 @@ Route::get('/', function () {
 Route::get('/name/{name}', function (string $name): string {
     return "Hello, $name";
 });
-// TODO сделать пару роутеров
-// репозиторий
+// 4. Реализовать несколько страниц с выводом какой-либо информации.
+//так же использовал пару простых вьюх
+Route::get('/one/', function (){
+    return view('one');
+});
+Route::get('/two/', function (){
+    return view('two');
+});
+
