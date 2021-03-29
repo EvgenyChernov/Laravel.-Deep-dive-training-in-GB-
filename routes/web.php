@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\{NewsController, HomeController, CategoryController};
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,19 +16,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', [HomeController::class, 'index'])
+    ->name('home');
+
+Route::get('category', [CategoryController::class, 'index'])
+    ->name('category');
+Route::get('category/show{id}', [CategoryController::class, 'show'])
+    ->where('id', '\d+')
+    ->name('category.show');
+
+// for admin
+Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
+    Route::resource('/categories', AdminCategoryController::class);
+    Route::resource('/news', AdminNewsController::class);
 });
 
-Route::get('/name/{name}', function (string $name): string {
-    return "Hello, $name";
-});
-// 4. Реализовать несколько страниц с выводом какой-либо информации.
-//так же использовал пару простых вьюх
-Route::get('/one/', function (){
-    return view('one');
-});
-Route::get('/two/', function (){
-    return view('two');
-});
-
+Route::get('news', [NewsController::class, 'index'])
+    ->name('news');
+Route::get('/news/show/{id}', [NewsController::class, 'show'])
+    ->where('id', '\d+')
+    ->name('news.show');
