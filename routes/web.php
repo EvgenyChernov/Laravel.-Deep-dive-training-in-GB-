@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{NewsController, HomeController, CategoryController};
+use App\Http\Controllers\NewsController;
+use App\Http\Controllers\{CategoryController};
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 
@@ -15,8 +16,8 @@ use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', [HomeController::class, 'index'])
+// TODO временно делал домашней страницей (думаю переделать на HomeController)
+Route::get('/', [NewsController::class, 'index'])
     ->name('home');
 
 Route::get('category', [CategoryController::class, 'index'])
@@ -27,7 +28,7 @@ Route::get('category/show{id}', [CategoryController::class, 'show'])
 
 // for admin
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
-    Route::resource('/categories', AdminCategoryController::class);
+    Route::resource('/category', AdminCategoryController::class);
     Route::resource('/news', AdminNewsController::class);
 });
 

@@ -14,7 +14,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return "Список категорий в админке";
+        return view('admin.news.categories.index', ['categoryList' => $this->categoryList]);
     }
 
     /**
@@ -46,7 +46,7 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        //
+        return 'показать категории в админке';
     }
 
     /**

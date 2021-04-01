@@ -26,7 +26,7 @@ class Controller extends BaseController
      */
     protected array $newsList = [
         'News 1',
-        'News 2',
+        '<strong>News 2</strong>',
         'News 3',
         'News 4',
         'News 5',
