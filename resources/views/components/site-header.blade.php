@@ -18,6 +18,12 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('admin.news.index') }}">Админка</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('feedback.create') }}">Форма обратной связи</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('orders.create') }}">Форма заказа выгрузки</a>
+                </li>
             </ul>
         </div>
     </div>

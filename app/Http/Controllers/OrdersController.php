@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class NewsController extends Controller
+class OrdersController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +13,7 @@ class NewsController extends Controller
      */
     public function index()
     {
-        return view('admin.news.index', ['newsList' => $this->newsList]);
+        //
     }
 
     /**
@@ -24,7 +23,7 @@ class NewsController extends Controller
      */
     public function create()
     {
-        return view('admin.news.create');
+        return view('orders.create');
     }
 
     /**
@@ -36,15 +35,16 @@ class NewsController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => ['required', 'string', 'min:2']
+            'name' => ['required', 'string', 'min:2']
         ]);
-//        dd($request->has('title')); // проверка на существование
-//        $title = $request->input('title', 'Заголовок'); // получение 1 значения
-//        $allowFields =  $request->only('title', 'slug'); // получение указанных полей в виде массива
-//        $allowFields = $request->except('title', 'slug', 'description'); // получение всех полей кроме указанных
-        $allowFields = $request->only('title', 'slug', 'description');
-
-        return response()->json($allowFields);
+        $allowFields = $request->only('name', 'phone', 'email', 'description');
+        $fileName = 'NewOrder_' . $allowFields['name'] . '_' . date("Y-m-d-H-m-s") . '.txt';
+        if (!file_exists($fileName)) {
+            $fp = fopen($fileName, "w"); // ("r" - считывать "w" - создавать "a" - добовлять к тексту),мы создаем файл
+            fwrite($fp, json_encode($allowFields, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE));
+            fclose($fp);
+        }
+        return response(view('orders.create'));
     }
 
     /**
@@ -66,7 +66,7 @@ class NewsController extends Controller
      */
     public function edit($id)
     {
-        return "Редактировать новость";
+        //
     }
 
     /**

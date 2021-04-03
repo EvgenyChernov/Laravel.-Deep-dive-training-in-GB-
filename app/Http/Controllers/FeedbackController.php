@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class NewsController extends Controller
+class FeedbackController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,17 +13,17 @@ class NewsController extends Controller
      */
     public function index()
     {
-        return view('admin.news.index', ['newsList' => $this->newsList]);
+        //
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function create()
     {
-        return view('admin.news.create');
+        return view('feedback.create');
     }
 
     /**
@@ -35,16 +34,13 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
+        //TODO Данные получены далее должно быть организовано взаимодействие с БД
         $request->validate([
-            'title' => ['required', 'string', 'min:2']
+            'username' => ['required', 'string']
         ]);
-//        dd($request->has('title')); // проверка на существование
-//        $title = $request->input('title', 'Заголовок'); // получение 1 значения
-//        $allowFields =  $request->only('title', 'slug'); // получение указанных полей в виде массива
-//        $allowFields = $request->except('title', 'slug', 'description'); // получение всех полей кроме указанных
-        $allowFields = $request->only('title', 'slug', 'description');
-
-        return response()->json($allowFields);
+        $username = $request->input('username');
+        $comment = $request->input('comment');
+        return response(view('feedback.create'));
     }
 
     /**
@@ -66,7 +62,7 @@ class NewsController extends Controller
      */
     public function edit($id)
     {
-        return "Редактировать новость";
+        //
     }
 
     /**
