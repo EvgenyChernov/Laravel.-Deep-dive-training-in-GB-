@@ -2,10 +2,10 @@
 @section('content')
     <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
-            @forelse ($categoryList as $key => $category)
+            @forelse ($categories as $category)
                 <div class="post-preview">
-                    <a href="{{ route('category.show', ['id' => ++$key]) }}">
-                        <h2 class="post-title"> {!! $category !!}</h2>
+                    <a href="{{ route('category.show', ['id' => $category->id]) }}">
+                        <h2 class="post-title"> {!! $category->title !!}</h2>
                     </a>
                 </div>
                 <hr>

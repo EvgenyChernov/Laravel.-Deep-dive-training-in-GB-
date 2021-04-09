@@ -53,3 +53,4 @@ Route::get('orders/create', [OrdersController::class, 'create'])
 Route::group(['prefix' => 'orders', 'as' => 'orders.'], function () {
     Route::resource('/', OrdersController::class);
 });
+

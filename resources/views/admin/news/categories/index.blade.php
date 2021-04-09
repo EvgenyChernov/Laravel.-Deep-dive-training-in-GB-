@@ -4,7 +4,7 @@
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Список категорий </h1>
-        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+        <a href="{{route('admin.category.create')}}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                 class="fas fa-plus fa-sm text-white-50"></i> Добавить новую категорию</a>
     </div>
     <div class="row">
@@ -18,15 +18,15 @@
             </tr>
             </thead>
             <tbody>
-            @forelse($categoryList as $key => $category)
+            @forelse($categories as $category)
                 <tr>
-                    <td>{{$key}}</td>
-                    <td>{{$category}}</td>
-                    <td>{{now()}}</td>
+                    <td>{{$category->id}}</td>
+                    <td>{{$category->title}}</td>
+                    <td>{{$category->created_at}}</td>
                     <td><a href="">редактировать</a>&nbsp; <a href="">Удалить</a></td>
                 </tr>
             @empty
-                <td colspan="4">Новостей нет</td>
+                <td colspan="4">Категорий нет</td>
             @endforelse
             </tbody>
         </table>
