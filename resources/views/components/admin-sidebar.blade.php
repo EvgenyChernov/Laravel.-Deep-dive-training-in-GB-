@@ -1,7 +1,7 @@
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{route('home')}}">
         <div class="sidebar-brand-icon rotate-n-15">
             <i class="fas fa-laugh-wink"></i>
         </div>
@@ -38,6 +38,7 @@
                 <h6 class="collapse-header">Базовые категории:</h6>
                 <a class="collapse-item" href="{{route('admin.category.index')}}">Категории</a>
                 <a class="collapse-item" href="{{route('admin.news.index')}}">Новости</a>
+                <a class="collapse-item" href="{{route('admin.feedback.index')}}">Отзывы</a>
             </div>
         </div>
     </li>

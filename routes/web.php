@@ -1,9 +1,15 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{CategoryController, NewsController, FeedbackController, OrdersController};
-use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
-use App\Http\Controllers\Admin\NewsController as AdminNewsController;
+use App\Http\Controllers\{CategoryController,
+    NewsController,
+    FeedbackController,
+    OrdersController
+};
+use App\Http\Controllers\Admin\{FeedbackController as AdminFeedbackController,
+    CategoryController as AdminCategoryController,
+    NewsController as AdminNewsController
+};
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +35,7 @@ Route::get('category/show{id}', [CategoryController::class, 'show'])
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
     Route::resource('/category', AdminCategoryController::class);
     Route::resource('/news', AdminNewsController::class);
+    Route::resource('/feedback', AdminFeedbackController::class);
 });
 
 Route::get('news', [NewsController::class, 'index'])
@@ -54,3 +61,15 @@ Route::group(['prefix' => 'orders', 'as' => 'orders.'], function () {
     Route::resource('/', OrdersController::class);
 });
 
+// Пример манипуляции с содержимым коллекции
+Route::get('/collections', function () {
+    $collect = collect([
+        'string',
+        'age',
+        'name',
+        'description'
+    ]);
+//    dd($collect->last(fn($i)=>dd($i)));
+//    dd($collect->count());
+//    dd($collect->map(fn($iterate) => Str::upper($iterate)));
+});

@@ -1,7 +1,5 @@
 @extends('layouts.admin')
 @section('content')
-
-
     <div class="row">
         <div class="col-8 offset-2">
             <h2 id="name">Добавить новость</h2>
@@ -15,7 +13,12 @@
                 <div class="form-group">
                     <label for="category">Категория</label>
                     <select class="form-control" id="category" name="category_id">
-                        <option value="0">Выбрать</option>
+                        @forelse($categories as $category)
+                            <option value="{{$category->id}}">{{$category->title}}</option>
+                        @empty
+                            <option value="0">Нет категорий</option>
+                        @endforelse
+
                     </select>
                 </div>
                 <div class="form-group">
@@ -27,8 +30,8 @@
                     <input type="text" id="slug" name="slug" class="form-control" value="{{old('slug')}}">
                 </div>
                 <div class="form-group">
-                    <label for="description">Описание</label>
-                    <textarea type="text" id="description" name="description" class="form-control">{!! old('description') !!}</textarea>
+                    <label for="text">Описание</label>
+                    <textarea type="text" id="text" name="text" class="form-control">{!! old('text') !!}</textarea>
                 </div>
                 <br>
                 <button type="submit" class="btn btn-success">Сохранить</button>
@@ -36,10 +39,3 @@
         </div>
     </div>
 @endsection
-@push('js')
-    <script>
-        $(function () {
-            {{--$("#name span").html("{{\Str::random(20) }}")--}}
-        })
-    </script>
-@endpush

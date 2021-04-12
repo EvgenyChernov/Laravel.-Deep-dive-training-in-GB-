@@ -11,7 +11,7 @@
                         </h3>
                     </a>
                     <p class="post-meta">Опубликовал Админ {{ $newsItem->created_at ?? now() }}
-                        <i>Категория: {{$newsItem->category_title}}</i>
+                        <i>Категория: {{$newsItem->category->id}}</i>
                     </p>
                 </div>
                 <hr>

@@ -2,61 +2,55 @@
 
 namespace App\Models;
 
-use App\Enums\NewsStatusEnum;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
+/**
+ * App\Models\News
+ *
+ * @property int $id
+ * @property int $category_id
+ * @property string $title
+ * @property string $slug
+ * @property string|null $image
+ * @property string|null $text
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property string $status
+ * @method static Builder|News newModelQuery()
+ * @method static Builder|News newQuery()
+ * @method static Builder|News query()
+ * @method static Builder|News whereCategoryId($value)
+ * @method static Builder|News whereCreatedAt($value)
+ * @method static Builder|News whereId($value)
+ * @method static Builder|News whereImage($value)
+ * @method static Builder|News whereSlug($value)
+ * @method static Builder|News whereStatus($value)
+ * @method static Builder|News whereText($value)
+ * @method static Builder|News whereTitle($value)
+ * @method static Builder|News whereUpdatedAt($value)
+ * @mixin Eloquent
+ * @property-read Category $category
+ */
 class News extends Model
 {
-    use HasFactory;
+//    use HasFactory;
 
     protected $table = "news";
 
-    public function getCount(): int
+    protected $fillable = [
+        'category_id',
+        'title',
+        'slug',
+        'text'
+    ];
+
+
+    public function category(): BelongsTo // обратная связь в единственном числе
     {
-        return \DB::table($this->table)
-            ->select(['id', 'title', 'text', 'created_at'])
-            ->count();
+        return $this->belongsTo(Category::class, 'category_id', 'id');
     }
-
-
-    public function getNews(bool $isAdmin = false): Collection
-    {
-        if (!$isAdmin) {
-            return \DB::table($this->table)
-                ->join('categories', 'categories.id', '=', 'news.category_id')
-                ->select(['news.id', 'news.title', 'news.text', 'news.created_at', 'categories.title as category_title'])
-                ->where('news.status', NewsStatusEnum::PUBLISHED)
-                ->get();
-        }
-        return \DB::table($this->table)
-            ->select(['id', 'title', 'text', 'created_at'])
-//            ->where([
-//                ['status', NewsStatusEnum::PUBLISHED],
-//                ['title', 'like', '%' . request()->query('s') . '%']
-//            ])
-//            ->whereIn('id', [4,7,8])
-//            ->whereNotIn('id', [7, 10])
-//            ->whereBetween('id', [7, 10])
-//            ->orWhere('id', '<', 3)
-            ->get();
-    }
-
-    public function getNewsById(int $id): ?object
-    {
-        return \DB::table($this->table)
-            ->select(['id', 'title', 'text', 'created_at'])
-            ->find($id);
-    }
-
-    public function getNewsByCategoryId(int $idCategory): Collection
-    {
-        return \DB::table($this->table)
-            ->join('categories', 'categories.id', '=', 'news.category_id')
-            ->select(['news.id', 'news.title', 'news.text', 'news.created_at', 'categories.title as category_title', 'categories.id as category_id'])
-            ->where([['news.status', NewsStatusEnum::PUBLISHED], ['category_id', $idCategory]])
-            ->get();
-    }
-
 }

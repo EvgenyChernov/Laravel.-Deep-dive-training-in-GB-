@@ -3,9 +3,9 @@
     <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
             @forelse ($categories as $category)
-                <div class="post-preview">
+                <div class="post-title">
                     <a href="{{ route('category.show', ['id' => $category->id]) }}">
-                        <h2 class="post-title"> {!! $category->title !!}</h2>
+                        <h5 class="post-title"> {!! $category->title !!}</h5>
                     </a>
                 </div>
                 <hr>

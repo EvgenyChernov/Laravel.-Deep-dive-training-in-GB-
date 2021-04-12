@@ -2,7 +2,8 @@
 @section('content')
     <div class="row">
         <div class="col-8 offset-2">
-            <h2 id="name">Форма заказа для получения выгрузки данных из какого-либо источника</h2>
+            <h2 id="name">Форма заказа для получения выгрузки данных из какого-либо источника (Функционал не
+                реализован)</h2>
             @if($errors->any())
                 @foreach($errors->all() as $error)
                     <div class="alert alert-danger">{{$error}}</div>
