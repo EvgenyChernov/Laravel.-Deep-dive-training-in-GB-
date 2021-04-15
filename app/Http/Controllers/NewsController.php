@@ -9,7 +9,7 @@ class NewsController extends Controller
 {
     public function index()
     {
-        $news = News::with('category')
+        $news = News::with('category:id,title') // использование связей
             ->select('id', 'title', 'text', 'created_at', 'category_id')
             ->where('news.status', NewsStatusEnum::PUBLISHED)
             ->get();

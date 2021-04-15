@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CreateNews;
+use App\Http\Requests\UpdateNews;
 use App\Models\Category;
 use App\Models\News;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View as ViewAlias;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -33,41 +36,36 @@ class NewsController extends Controller
     public function create()
     {
         return view('admin.news.create', [
-            'categories' => Category::get()]);
+            'categories' => Category::get()
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param CreateNews $request
      * @return RedirectResponse
      */
-    public function store(Request $request): RedirectResponse
+    public function store(CreateNews $request): RedirectResponse
     {
-        $request->validate([
-            'title' => ['required', 'string', 'min:2']
-        ]);
-//        dd($request->has('title')); // проверка на существование
-//        $title = $request->input('title', 'Заголовок'); // получение 1 значения
-//        $allowFields =  $request->only('title', 'slug'); // получение указанных полей в виде массива
-//        $allowFields = $request->except('title', 'slug', 'description'); // получение всех полей кроме указанных
-//        $allowFields = $request->only('title', 'slug', 'description');
-        $date = $request->only('category_id', 'title', 'slug', 'text');
-        $newsStatus = News::create($date);
+
+        $news = new News($request->validated()); // возвращаем отвалидированные данные $request->validated()
+        $category = Category::find($request->validated()['category_id']);
+        $newsStatus = $category->news()->save($news);
         if ($newsStatus) {
             return redirect()->route('admin.news.index')
-                ->with('success', 'Запись успешно добавлена');
+                ->with('success', __('messages.admin.news.create.success'));
         }
-        return back()->with('error', 'Не удалось добавить запись');
+        return back()->with('error', __('messages.admin.news.create.fail'));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param int $id
+     * @param $news
      * @return Response
      */
-    public function show($id)
+    public function show($news)
     {
         //
     }
@@ -81,42 +79,47 @@ class NewsController extends Controller
     public function edit(News $news)
     {
         return view('admin.news.edit', [
-            'news' => $news
+            'news' => $news,
+            'categories' => Category::get()
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
+     * @param UpdateNews $request
      * @param News $news
      * @return RedirectResponse
      */
-    public function update(Request $request, News $news): RedirectResponse
+    public function update(UpdateNews $request, News $news): RedirectResponse
     {
-        $data = $request->only(['title', 'text', 'status']);
-        $newsStatus = $news->fill($data)->save();
-        if ($newsStatus) {
+
+        $news = $news->fill($request->validated());
+        $news->category_id = $request->validated()['category_id'];
+        if ($news->save()) {
             return redirect()->route('admin.news.index')
-                ->with('success', 'Запись успешно изменилась');
+                ->with('success', __('messages.admin.news.update.success'));
         }
-        return back()->with('error', 'Не удалось сохранить запись');
+        return back()->with('error', __('messages.admin.news.update.fail'));
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param News $news
-     * @return RedirectResponse
+     * @return JsonResponse
      * @throws Exception
      */
-    public function destroy(News $news): RedirectResponse
+    public function destroy(News $news): JsonResponse
     {
-        $newsStatus = $news->delete();
-        if ($newsStatus) {
-            return redirect()->route('admin.news.index')
-                ->with('success', 'Запись успешно удалена');
+
+        try {
+            if (\request()->ajax()) {
+                $news->delete();
+                return response()->json(['success', true]);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['success', false]);
         }
-        return back()->with('error', 'Не удалось удалить запись');
     }
 }

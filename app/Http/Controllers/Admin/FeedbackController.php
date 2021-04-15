@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdateFeedback;
 use App\Models\Feedback;
 use App\Models\User_customers;
 use Illuminate\Contracts\Foundation\Application as ApplicationAlias;
@@ -76,18 +77,18 @@ class FeedbackController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
+     * @param UpdateFeedback $request
      * @param Feedback $feedback
      * @return RedirectResponse
      */
-    public function update(Request $request, Feedback $feedback): RedirectResponse
+    public function update(UpdateFeedback $request, Feedback $feedback): RedirectResponse
     {
-        //TODO подумать как применить вставку в связанные таблицы (возможно транзакция)
-        $dataFeedback['text'] = $request->input('text');
-        $feedbackStatus = $feedback->fill($dataFeedback)->save();
-        $dataUser['name'] = $request->input('name');
-        $userStatus = (User_customers::find($feedback->user_id))->fill($dataUser)->save();
-        if ($feedbackStatus && $userStatus) {
+        //TODO подумать как сделать 2 запроса а не три
+        $user = User_customers::find($feedback->user_id);
+        $user->fill($request->validated())->save();
+        $dataForm = new Feedback($request->validated());
+        $status = $user->feedback()->save($dataForm);
+        if ($status) {
             return redirect()->route('admin.feedback.index')
                 ->with('success', 'Запись успешно изменилась');
         }

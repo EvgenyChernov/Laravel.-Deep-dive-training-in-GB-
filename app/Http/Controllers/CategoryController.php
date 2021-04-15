@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\NewsStatusEnum;
 use App\Models\Category;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -22,11 +23,13 @@ class CategoryController extends Controller
      */
     public function show(int $id)
     {
-        //TODO разобраться как получать только необходимые поля из двух таблиц select
-        // а так же применять различные условия к таблицам
-        $category = Category::where('id', '=', $id)
-            ->with('news')
+        $category = Category::with(['news' => function ($query) {
+            $query
+                ->select('id', 'title', 'text', 'created_at', 'category_id')
+                ->where('news.status', NewsStatusEnum::PUBLISHED);
+        }])->select('id', 'title')
+            ->where('id', '=', $id)
             ->get();
-        return view('category.show', ['category' => $category]);
+        return view('category.show', ['category' => $category->first()]);
     }
 }

@@ -10,7 +10,7 @@
     <meta name="author" content="">
 
     <title>Панель администратора</title>
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Custom fonts for this template-->
     <link href="{{asset('assets/vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
     <link

@@ -18,7 +18,6 @@
                         @empty
                             <option value="0">Нет категорий</option>
                         @endforelse
-
                     </select>
                 </div>
                 <div class="form-group">

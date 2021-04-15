@@ -42,7 +42,6 @@ class News extends Model
     protected $table = "news";
 
     protected $fillable = [
-        'category_id',
         'title',
         'slug',
         'text'

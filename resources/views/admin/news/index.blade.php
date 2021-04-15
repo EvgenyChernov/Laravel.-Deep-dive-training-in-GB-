@@ -22,21 +22,12 @@
             </thead>
             <tbody>
             @forelse($news as $newsItem)
-                <tr>
+                <tr id="{{$newsItem->id}}">
                     <td>{{$newsItem->id}}</td>
                     <td>{!! $newsItem->title !!}</td>
                     <td>{{$newsItem->created_at}}</td>
-                    <td><a href="{{route('admin.news.edit',['news' => $newsItem->id])}}">редактировать</a>
-                        <a href="#"
-                           onclick="event.preventDefault();
-                               document.getElementById('destroy-form{{$newsItem->id}}').submit();">Удалить</a>
-                        <form id="destroy-form{{$newsItem->id}}"
-                              action="{{ route('admin.news.destroy', ['news' => $newsItem->id]) }}"
-                              method="POST"
-                              style="display: none;">
-                            @method('DELETE')
-                            @csrf
-                        </form>
+                    <td><a href="{{route('admin.news.edit',['news' => $newsItem])}}">редактировать</a>
+                        <a href="javascript:;" class="delete" rel="{{$newsItem->id}}">Уд.</a>
                     </td>
                 </tr>
             @empty
@@ -46,3 +37,26 @@
         </table>
     </div>
 @endsection
+
+@push('js')
+    <script>
+        $(function () {
+            $(".delete").on('click', function () {
+                let id = $(this).attr('rel');
+                if (confirm("Подтверждаете?")) {
+                    $.ajax({
+                        method: "delete",
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                            'Content-Type': 'application/json',
+                        },
+                        url: "/admin/news/" + id,
+                        complete: function (response) {
+                            document.getElementById(id).remove();
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+@endpush

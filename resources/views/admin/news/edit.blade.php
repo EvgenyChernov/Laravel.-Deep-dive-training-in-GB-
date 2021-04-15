@@ -12,10 +12,24 @@
                 @csrf
                 @method('PUT')
                 <div class="form-group">
+                    <label for="category">Категория</label>
+                    <select class="form-control" id="category" name="category_id">
+                        @forelse($categories as $category)
+                            <option value="{{$category->id}}"
+                                    @if($category->id === $news->category_id) selected @endif>{{$category->title}}</option>
+                        @empty
+                            <option value="0">Нет категорий</option>
+                        @endforelse
+                    </select>
+                </div>
+                <div class="form-group">
                     <label for="title">Наименование</label>
                     <input type="text" id="title" name="title" class="form-control" value="{{$news->title}}">
                 </div>
-
+                <div class="form-group">
+                    <label for="image">Изображение</label>
+                    <input type="file" id="image" name="image" class="form-control">
+                </div>
                 <div class="form-group">
                     <label for="description">Описание</label>
                     <textarea type="text" id="description" name="description"

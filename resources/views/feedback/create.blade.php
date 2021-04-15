@@ -19,8 +19,8 @@
                     <input type="text" id="name" name="name" class="form-control" value="{{old('name')}}">
                 </div>
                 <div class="form-group">
-                    <label for="comment">Комментарий</label>
-                    <textarea type="text" id="comment" name="comment"
+                    <label for="text">Комментарий</label>
+                    <textarea type="text" id="text" name="text"
                               class="form-control">{!! old('comment') !!}</textarea>
                 </div>
                 <br>

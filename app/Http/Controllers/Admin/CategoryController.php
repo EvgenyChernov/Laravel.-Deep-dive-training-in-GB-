@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CreateCategory;
+use App\Http\Requests\UpdateCategory;
 use App\Models\Category;
 use Exception;
 use Illuminate\Contracts\View\View;
@@ -11,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Contracts\Foundation\Application;
 use \Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException;
 
 class CategoryController extends Controller
 {
@@ -42,19 +45,18 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param CreateCategory $request
      * @return RedirectResponse
      */
-    public function store(Request $request): RedirectResponse
+    public function store(CreateCategory $request): RedirectResponse
     {
-        //TODO должна быть валидация
         $data = $request->only(['title', 'description', 'is_visible']);
         $category = Category::create($data);
         if ($category) {
             return redirect()->route('admin.category.index')
-                ->with('success', 'Запись успешно добавлена');
+                ->with('success', __('messages.admin.news.create.success'));
         }
-        return back()->with('error', 'Не удалось добавить запись');
+        return back()->with('error', __('messages.admin.news.create.fail'));
     }
 
     /**
@@ -86,19 +88,18 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
+     * @param UpdateCategory $request
      * @param Category $category
      * @return RedirectResponse
      */
-    public function update(Request $request, Category $category): RedirectResponse
+    public function update(UpdateCategory $request, Category $category): RedirectResponse
     {
-        $data = $request->only(['title', 'description', 'is_visible']);
-        $categoryStatus = $category->fill($data)->save();
+        $categoryStatus = $category->fill($request->validated())->save();
         if ($categoryStatus) {
             return redirect()->route('admin.category.index')
-                ->with('success', 'Запись успешно изменилась');
+                ->with('success', __('messages.admin.news.update.success'));
         }
-        return back()->with('error', 'Не удалось сохранить запись');
+        return back()->with('error', __('messages.admin.news.update.fail'));
     }
 
     /**

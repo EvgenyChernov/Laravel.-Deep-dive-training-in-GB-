@@ -38,10 +38,7 @@ class OrdersController extends Controller
      */
     public function store(Request $request): Response
     {
-        // TODO подлежит исправлению
-        $request->validate([
-            'name' => ['required', 'string', 'min:2']
-        ]);
+        //TODO подлежит переделыванию
         $allowFields = $request->only('name', 'phone', 'email', 'description');
         $fileName = 'NewOrder_' . $allowFields['name'] . '_' . date("Y-m-d-H-m-s") . '.txt';
         if (!file_exists($fileName)) {

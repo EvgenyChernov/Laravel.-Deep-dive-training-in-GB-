@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateFeedback;
 use App\Models\Feedback;
 use App\Models\User_customers;
 use Illuminate\Contracts\Foundation\Application;
@@ -36,20 +37,15 @@ class FeedbackController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param CreateFeedback $request
      * @return RedirectResponse
      */
-    public function store(Request $request): RedirectResponse
+    public function store(CreateFeedback $request): RedirectResponse
     {
-        //TODO подумать как применить вставку в связанные таблицы (возможно транзакция)
-        $dataUser['name'] = $request->input('name');
-        $user = User_customers::create($dataUser);
-        $dataFeedback['text'] = $request->input('comment');
-        $dataFeedback['user_id'] = $user->id;
-        if ($user) {
-            $feedback = Feedback::create($dataFeedback);
-        }
-        if ($feedback) {
+        $feedback = new Feedback($request->validated());
+        $user = User_customers::create($request->validated());
+        $status = $user->feedback()->save($feedback);
+        if ($status) {
             return redirect()->route('feedback.create')
                 ->with('success', 'Отзыв успешно добавлен');
         }
