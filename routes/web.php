@@ -1,14 +1,16 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{CategoryController,
+use App\Http\Controllers\{Account\AccountController,
+    CategoryController,
     NewsController,
     FeedbackController,
     OrdersController
 };
 use App\Http\Controllers\Admin\{FeedbackController as AdminFeedbackController,
     CategoryController as AdminCategoryController,
-    NewsController as AdminNewsController
+    NewsController as AdminNewsController,
+    UserController as AdminUserController
 };
 
 /*
@@ -31,11 +33,21 @@ Route::get('category/show{id}', [CategoryController::class, 'show'])
     ->where('id', '\d+')
     ->name('category.show');
 
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/logout', function () {
+        \Auth::logout();
+        return redirect()->route('login');
+    })->name('logout');
+// for account
+    Route::get('/account', AccountController::class)
+        ->name('account');
 // for admin
-Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
-    Route::resource('/category', AdminCategoryController::class);
-    Route::resource('/news', AdminNewsController::class);
-    Route::resource('/feedback', AdminFeedbackController::class);
+    Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'admin'], function () {
+        Route::resource('/category', AdminCategoryController::class);
+        Route::resource('/news', AdminNewsController::class);
+        Route::resource('/feedback', AdminFeedbackController::class);
+        Route::resource('/user', AdminUserController::class);
+    });
 });
 
 Route::get('news', [NewsController::class, 'index'])
@@ -61,15 +73,6 @@ Route::group(['prefix' => 'orders', 'as' => 'orders.'], function () {
     Route::resource('/', OrdersController::class);
 });
 
-// Пример манипуляции с содержимым коллекции
-Route::get('/collections', function () {
-    $collect = collect([
-        'string',
-        'age',
-        'name',
-        'description'
-    ]);
-//    dd($collect->last(fn($i)=>dd($i)));
-//    dd($collect->count());
-//    dd($collect->map(fn($iterate) => Str::upper($iterate)));
-});
+Auth::routes();
+
+//Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

@@ -39,6 +39,7 @@
                 <a class="collapse-item" href="{{route('admin.category.index')}}">Категории</a>
                 <a class="collapse-item" href="{{route('admin.news.index')}}">Новости</a>
                 <a class="collapse-item" href="{{route('admin.feedback.index')}}">Отзывы</a>
+                <a class="collapse-item" href="{{route('admin.user.index')}}">Пользователи</a>
             </div>
         </div>
     </li>
