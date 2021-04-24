@@ -7,6 +7,10 @@
         <a href="{{ route('admin.news.create') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                 class="fas fa-plus fa-sm text-white-50"></i> Добавить новую новость</a>
     </div>
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <a href="{{ route('admin.parsing') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                class="fas fa-plus fa-sm text-white-50"></i> Запарсить музыкальные новости с яндекса с записью в БД</a>
+    </div>
     <div class="row">
         @if(session()->has('success'))
             <div class="alert alert-success">{{session()->get('success')}}</div>

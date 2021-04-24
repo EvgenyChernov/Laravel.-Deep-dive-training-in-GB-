@@ -5,7 +5,9 @@ use App\Http\Controllers\{Account\AccountController,
     CategoryController,
     NewsController,
     FeedbackController,
-    OrdersController
+    OrdersController,
+    ParserController,
+    SocialiteController
 };
 use App\Http\Controllers\Admin\{FeedbackController as AdminFeedbackController,
     CategoryController as AdminCategoryController,
@@ -47,6 +49,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('/news', AdminNewsController::class);
         Route::resource('/feedback', AdminFeedbackController::class);
         Route::resource('/user', AdminUserController::class);
+        Route::get('/parsing', ParserController::class)
+            ->name('parsing');
     });
 });
 
@@ -74,5 +78,20 @@ Route::group(['prefix' => 'orders', 'as' => 'orders.'], function () {
 });
 
 Auth::routes();
+
+Route::group(['middleware' => 'guest', 'prefix' => 'socialite'], function () {
+    //login VK
+    Route::get('/auth/vk', [SocialiteController::class, 'loginVK'])
+        ->name('vk.init');
+    Route::get('/auth/vk/callback', [SocialiteController::class, 'responseVK'])
+        ->name('vk.callback');
+    //login Facebook
+    Route::get('/auth/facebook', [SocialiteController::class, 'loginFacebook'])
+        ->name('facebook.init');
+    Route::get('/auth/facebook/callback', [SocialiteController::class, 'responseFacebook'])
+        ->name('facebook.callback');
+});
+https://homestead.test/auth/facebook/callback
+
 
 //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
