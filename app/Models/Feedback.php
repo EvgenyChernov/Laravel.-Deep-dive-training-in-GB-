@@ -28,6 +28,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Feedback whereUpdatedAt($value)
  * @method static Builder|Feedback whereUserId($value)
  * @mixin Eloquent
+ * @property-read \App\Models\User_customers $userCustomers
  */
 class Feedback extends Model
 {

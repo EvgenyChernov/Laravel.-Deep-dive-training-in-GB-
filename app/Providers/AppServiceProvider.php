@@ -7,6 +7,7 @@ use App\Services\SocialiteService;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\URL;
+use UniSharp\LaravelFilemanager\LaravelFilemanagerServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {

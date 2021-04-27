@@ -93,8 +93,17 @@ class NewsController extends Controller
      */
     public function update(UpdateNews $request, News $news): RedirectResponse
     {
-
-        $news = $news->fill($request->validated());
+        $validated = $request->validated();
+        // TODO переделать логику хранения файла в класс сервиса
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $originalName = $image->getClientOriginalName();
+            $originalExt = $image->getClientOriginalExtension();
+            $fileName = uniqid();
+            $fileLink = $image->storeAs('news', $fileName . '.' . $originalExt, 'public');
+            $validated['image'] = $fileLink;
+        }
+        $news = $news->fill($validated);
         $news->category_id = $request->validated()['category_id'];
         if ($news->save()) {
             return redirect()->route('admin.news.index')

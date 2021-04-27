@@ -40,6 +40,7 @@
                 <a class="collapse-item" href="{{route('admin.news.index')}}">Новости</a>
                 <a class="collapse-item" href="{{route('admin.feedback.index')}}">Отзывы</a>
                 <a class="collapse-item" href="{{route('admin.user.index')}}">Пользователи</a>
+                <a class="collapse-item" href="{{route('admin.resource.index')}}">Ресурсы для парсинга</a>
             </div>
         </div>
     </li>

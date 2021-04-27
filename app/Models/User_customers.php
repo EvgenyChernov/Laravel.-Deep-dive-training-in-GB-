@@ -21,6 +21,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static Builder|User_customers newQuery()
  * @method static Builder|User_customers query()
  * @mixin Eloquent
+ * @property int $id
+ * @property string $name
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static Builder|User_customers whereCreatedAt($value)
+ * @method static Builder|User_customers whereId($value)
+ * @method static Builder|User_customers whereName($value)
+ * @method static Builder|User_customers whereUpdatedAt($value)
  */
 class User_customers extends Model
 {

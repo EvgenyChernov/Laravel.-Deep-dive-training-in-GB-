@@ -12,8 +12,8 @@ use App\Http\Controllers\{Account\AccountController,
 use App\Http\Controllers\Admin\{FeedbackController as AdminFeedbackController,
     CategoryController as AdminCategoryController,
     NewsController as AdminNewsController,
-    UserController as AdminUserController
-};
+    ResourceController as AdminResourceController,
+    UserController as AdminUserController};
 
 /*
 |--------------------------------------------------------------------------
@@ -49,6 +49,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('/news', AdminNewsController::class);
         Route::resource('/feedback', AdminFeedbackController::class);
         Route::resource('/user', AdminUserController::class);
+        Route::resource('/resource', AdminResourceController::class);
         Route::get('/parsing', ParserController::class)
             ->name('parsing');
     });
@@ -95,3 +96,6 @@ https://homestead.test/auth/facebook/callback
 
 
 //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
+    \UniSharp\LaravelFilemanager\Lfm::routes();
+});

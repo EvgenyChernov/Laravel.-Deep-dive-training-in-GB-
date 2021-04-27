@@ -2,7 +2,11 @@
 
 
 namespace App\Services;
+
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Orchestra\Parser\Xml\Facade as XmlParser;
+use phpDocumentor\Reflection\Types\This;
 
 class ParserService
 {
@@ -14,10 +18,10 @@ class ParserService
         return $this;
     }
 
-    public function parsing(): array
+    public function parsing(): void
     {
         $xml = XmlParser::load($this->url);
-        return $xml->parse([
+        $data = $xml->parse([
             'title' => [
                 'uses' => 'channel.title'
             ],
@@ -35,6 +39,8 @@ class ParserService
             ],
 
         ]);
-
+        $e = explode("/", $this->url);
+        $fileName = end($e);
+        Storage::append('parsing/' . $fileName . ".txt", json_encode($data));
     }
 }

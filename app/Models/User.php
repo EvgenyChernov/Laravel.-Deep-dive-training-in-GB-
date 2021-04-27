@@ -38,10 +38,17 @@ use Illuminate\Support\Carbon;
  * @method static Builder|User whereRememberToken($value)
  * @method static Builder|User whereUpdatedAt($value)
  * @mixin Eloquent
+ * @property bool $is_admin
+ * @property string|null $last_login
+ * @property string|null $avatar
+ * @method static Builder|User whereAvatar($value)
+ * @method static Builder|User whereIsAdmin($value)
+ * @method static Builder|User whereLastLogin($value)
  */
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+//    use HasFactory;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
